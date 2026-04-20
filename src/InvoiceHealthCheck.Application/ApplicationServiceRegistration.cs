@@ -15,6 +15,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IAnomalyRule, OutlierAmountRule>();
         services.AddScoped<IAnomalyRule, DuplicateDetectionRule>();
         services.AddScoped<IAnomalyRule, SanityCheckRule>();
+        services.AddScoped<IAnomalyRule, UnusualCurrencyRule>();
 
         return services;
     }
