@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using InvoiceHealthCheck.Application.Anomalies;
+using InvoiceHealthCheck.Application.Anomalies.Rules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InvoiceHealthCheck.Application;
@@ -9,6 +11,10 @@ public static class ApplicationServiceRegistration
     {
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+        services.AddScoped<IAnomalyRule, OutlierAmountRule>();
+        services.AddScoped<IAnomalyRule, DuplicateDetectionRule>();
+        services.AddScoped<IAnomalyRule, SanityCheckRule>();
 
         return services;
     }
