@@ -1,4 +1,5 @@
 ﻿using InvoiceHealthCheck.Application.Abstractions.ExchangeRates;
+using InvoiceHealthCheck.Application.Abstractions.Persistence;
 using InvoiceHealthCheck.Infrastructure.ExchangeRates;
 using InvoiceHealthCheck.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ public static class InfrastructureServiceRegistration
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("AppDatabase")));
+
+        services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
         var frankfurterBaseUrl = configuration["Frankfurter:BaseUrl"]
             ?? throw new InvalidOperationException("Frankfurter:BaseUrl configuration is missing.");

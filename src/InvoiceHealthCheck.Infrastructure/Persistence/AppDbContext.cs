@@ -1,9 +1,10 @@
-﻿using InvoiceHealthCheck.Domain.Entities;
+﻿using InvoiceHealthCheck.Application.Abstractions.Persistence;
+using InvoiceHealthCheck.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace InvoiceHealthCheck.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public class AppDbContext : DbContext, IAppDbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
