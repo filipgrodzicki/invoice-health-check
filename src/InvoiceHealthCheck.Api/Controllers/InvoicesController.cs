@@ -1,4 +1,5 @@
 ﻿using InvoiceHealthCheck.Application.Invoices.Commands.AddInvoice;
+using InvoiceHealthCheck.Application.Invoices.Commands.AnalyzeInvoiceBatch;
 using InvoiceHealthCheck.Application.Invoices.Queries.GetContractorStats;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,22 @@ public class InvoicesController : ControllerBase
     {
         var result = await _mediator.Send(command, cancellationToken);
         return CreatedAtAction(nameof(Add), new { id = result.InvoiceId }, result);
+    }
+
+    /// <summary>
+    /// Analyzes a batch of candidate invoices for anomalies without persisting them.
+    /// Returns per-invoice flags (outliers, duplicates, unusual currency, sanity issues)
+    /// plus a summary dashboard. Does not modify the database.
+    /// </summary>
+    [HttpPost("batch/analyze")]
+    [ProducesResponseType(typeof(AnalyzeInvoiceBatchResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AnalyzeInvoiceBatchResult>> AnalyzeBatch(
+        [FromBody] AnalyzeInvoiceBatchCommand command,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(command, cancellationToken);
+        return Ok(result);
     }
 
     /// <summary>
