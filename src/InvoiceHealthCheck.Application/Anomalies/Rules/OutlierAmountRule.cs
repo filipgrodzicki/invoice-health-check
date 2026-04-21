@@ -13,6 +13,9 @@ public sealed class OutlierAmountRule : IAnomalyRule
 
     public IEnumerable<AnomalyFlag> Evaluate(AnomalyCheckContext context)
     {
+        if (context.Candidate.Amount <= 0m)
+            yield break;
+
         var historical = context.History
             .InCurrency(context.Candidate.Currency)
             .Select(h => h.Amount)
